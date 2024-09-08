@@ -3,7 +3,7 @@ from telebot import formatting
 
 start_msg = formatting.format_text(
     formatting.format_text(
-        "Вас приветствует помощник менеджера",
+        "Вас приветствует бот-помощник менеджера",
         formatting.hlink("Дзен.", "https://dzen.ru"),
         separator=" ",
     ),
@@ -75,4 +75,43 @@ visit_our_website_msg = formatting.format_text(
     formatting.format_text("+ видеофрагменты,"),
     formatting.format_text("+ клубы - "),
     formatting.format_text("все это в одном клике от Вас на нашем сайте!"),
+)
+
+customer_survey_purpose_of_the_call_msg = ("Что желаете узнать у менеджера?")
+
+customer_survey_invalid_contact_msg = formatting.format_text(
+    formatting.format_text(
+        "Не понимаю. Нажмите",
+        formatting.hbold("отправить контакт"),
+        "на клавиатуре ниже, и я запишу Ваш номер.",
+        "Так уж я запрограммирован.",
+        separator=" ",
+    ),
+    formatting.format_text(
+        "Кликнув",
+            formatting.hitalic("отмена,"),
+            "можно отменить отправку заявки.",
+            separator=" ",
+    ),
+)
+
+customer_survey_ask_for_city_msg = formatting.format_text(
+    formatting.format_text("В каком Вы городе?"),
+    formatting.format_text(
+        "Напишите одним словом. Например,",
+        formatting.hbold("Волгоград."),
+        separator=" ",
+    ),
+    formatting.format_text("Это чтобы менеджер знал(а) Ваш часовой пояс."),
+)
+
+#customer_survey_city_ok_send_final_msg = formatting.format_text()
+
+customer_survey_city_not_ok = formatting.format_text(
+    "Напишите город текстом, пожалуйста.",
+    formatting.format_text(
+        "Например,",
+        formatting.hbold("Волгоград."),
+        separator=" ",
+    ),
 )
