@@ -235,9 +235,9 @@ def handle_purpose_of_the_call_ask_for_city(message: types.Message):
 
 #Формирование итогов для юзера и админа
 def prepare_result_msg_text(data: dict, message: types.Message):
-    full_name=data.pop("full_name", " ")
-    contact_number=data.pop("contact_number", " ")
-    purpose_of_the_call=data.pop("purpose_of_the_call", " ")
+    full_name=data.get("full_name", " ")
+    contact_number=data.get("contact_number", " ")
+    purpose_of_the_call=data.get("purpose_of_the_call", " ")
 
     text = formatting.format_text(
         "Спасибо! Все записал и отправил менеджеру.",
@@ -274,9 +274,9 @@ def prepare_result_msg_text(data: dict, message: types.Message):
 
 
 def prepare_result_msg_text_for_admin(data: dict, message: types.Message):
-    full_name=data.pop("full_name", " ")
-    contact_number=data.pop("contact_number", " ")
-    purpose_of_the_call=data.pop("purpose_of_the_call", " ")
+    full_name=data.get("full_name", " ")
+    contact_number=data.get("contact_number", " ")
+    purpose_of_the_call=data.get("purpose_of_the_call", " ")
 
     text = formatting.format_text(
         "У Вас новое обращение.",
@@ -303,7 +303,6 @@ def prepare_result_msg_text_for_admin(data: dict, message: types.Message):
     )
     return text
 
-
 #Отправка итогов юзеру и админу
 @bot.message_handler(
     content_types=["text"],
@@ -312,6 +311,8 @@ def prepare_result_msg_text_for_admin(data: dict, message: types.Message):
 def handle_city_ok_send_final_msgs(message: types.Message):
     visit_our_website_kb = get_visit_our_website_kb()
     admin_chat_id = get_admin_ids()
+    user_text="text"
+    admin_text="text for admin"
     with bot.retrieve_data(
         user_id=message.from_user.id,
         chat_id=message.chat.id,
