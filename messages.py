@@ -60,7 +60,7 @@ customer_survey_wrong_name = formatting.format_text(
 
 
 customer_survey_cancel_msg = formatting.format_text(
-    "Жаль, что нам пришлось прерваться",
+    "Жаль, что нам пришлось прерваться.",
     formatting.format_text(
         "В любое время нажмите",
         formatting.hbold("/leave_a_message,"),
@@ -78,6 +78,8 @@ visit_our_website_msg = formatting.format_text(
 )
 
 customer_survey_purpose_of_the_call_msg = ("Что желаете узнать у менеджера?")
+
+customer_survey_invalid_call_purpose_msg = ("Непонятно. Нажмите на одну из опций на клавиатуре ниже. Так уж я запрограммирован.")
 
 customer_survey_invalid_contact_msg = formatting.format_text(
     formatting.format_text(

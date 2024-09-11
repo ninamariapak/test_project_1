@@ -61,10 +61,10 @@ def get_purpose_of_the_call_kb():
     services_button = types.KeyboardButton(text="Курсы")
     camps_button = types.KeyboardButton(text="Лагеря")
     test_button = types.KeyboardButton(text="Записаться на тестирование")
-    vacancies_button = types.KeyboardButton(text="Цены")
+    price_button = types.KeyboardButton(text="Цены")
     a_little_bit_of_everything_button = types.KeyboardButton(text="Обо всем понемногу")
     other_button = types.KeyboardButton(text="Другое")
-    keyboard.add(services_button, camps_button, test_button, vacancies_button, a_little_bit_of_everything_button, other_button)
+    keyboard.add(services_button, camps_button, test_button, price_button, a_little_bit_of_everything_button, other_button)
     return keyboard
 
 
@@ -77,7 +77,7 @@ def handle_command_start(message: types.Message):
     )
 
 
-@bot.message_handler(commands=["user_and_chat_id"])
+@bot.message_handler(commands=["chat_id"])
 def handle_user_and_chat_id_request(message: types.Message):
     text = f"{message.chat.id}"
     bot.send_message(
@@ -149,7 +149,7 @@ def handle_contact_number_ask_for_purpose(message: types.Message):
     bot.add_data(
         user_id=message.from_user.id,
         chat_id=message.chat.id,
-        contact_number=contact_number,
+        contact_number=contact_number.phone_number,
     )
     bot.set_state(
         user_id=message.from_user.id,
@@ -231,6 +231,19 @@ def handle_purpose_of_the_call_ask_for_city(message: types.Message):
         reply_markup=types.ReplyKeyboardRemove(),
     )
 
+
+@bot.message_handler(
+    content_types=util.content_type_media,
+    state=CustomerSurveyStates.purpose_of_the_call.name,
+)
+def handle_invalid_call_purpose(message: types.Message):
+    purpose_of_the_call_kb = get_purpose_of_the_call_kb()
+    bot.send_message(
+        chat_id=message.chat.id,
+        text=messages.customer_survey_invalid_call_purpose_msg,
+        reply_markup=purpose_of_the_call_kb,
+    )
+
 #Реакции на город + итоги опроса
 
 #Формирование итогов для юзера и админа
@@ -310,9 +323,7 @@ def prepare_result_msg_text_for_admin(data: dict, message: types.Message):
 )
 def handle_city_ok_send_final_msgs(message: types.Message):
     visit_our_website_kb = get_visit_our_website_kb()
-    admin_chat_id = get_admin_ids()
-    user_text="text"
-    admin_text="text for admin"
+    admin_chat_ids = get_admin_ids()
     with bot.retrieve_data(
         user_id=message.from_user.id,
         chat_id=message.chat.id,
@@ -335,13 +346,24 @@ def handle_city_ok_send_final_msgs(message: types.Message):
         parse_mode="HTML",
         reply_markup=visit_our_website_kb,
     )
+    for admin_chat_id in admin_chat_ids:
+        bot.send_message(
+            chat_id=admin_chat_id,
+            text=admin_text,
+            parse_mode="HTML",
+        )
+
+
+@bot.message_handler(
+    content_types=util.content_type_media,
+    state=CustomerSurveyStates.city.name,
+)
+def handle_city_not_text_answer(message: types.Message):
     bot.send_message(
-        chat_id=admin_chat_id,
-        text=admin_text,
+        chat_id=message.chat.id,
+        text=messages.customer_survey_city_not_ok,
         parse_mode="HTML",
     )
-
-
 
 
 if __name__ == '__main__':
